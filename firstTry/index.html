@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+ 	<script src="http://underscorejs.org/underscore.js" type="text/javascript"></script>
+	<script src="js/biPartiteFlight.js"></script>
+ 	
+	<style>
+		body{
+			width:1200px;
+		}
+		svg text{
+			font-size:12px;
+		}
+		rect{
+			shape-rendering:crispEdges;
+		}
+		table {
+			padding: 5px; 
+		}
+		.mainheader{
+			font-size: 30px;
+			font-weight: bold;
+		}
+		
+		.subheader{
+			font-size: 13px;
+			color: grey;
+		}
+		
+		.monthslider{
+		    font-size: 15px;
+			font-weight: bold;
+		}
+	</style>
+<script type="text/javascript">
+	var groupColumns = ["year", "month"];   //defines how the data is grouped
+	
+	var performanceColumns = ["aircraft", "nas", "weather", "security", "late", "cancelled", "diverted"];
+	var keyColumns = ["carrier", "state"];
+	var id2 = "StatePerformance";
+	var id1 = "AirlinePerformance";
+		
+	/** 
+	 **  	Group data according to groups array for easy retrieval
+	 **     i.e.  {"2003":{"1":{"AA":
+	 **/
+    function groupData(bigdata, groups, groupI) {
+    	groupI = typeof groupI !== 'undefined' ? groupI:0;
+    	var group = _.groupBy(bigdata, function(d) {
+    		return d[groups[groupI]];
+    		});
+    	
+    	groupI++;
+    	if (groupI < groups.length) {
+	    	var data = {};
+	    	var keys = _.keys(group);
+	    	for (var i=0; i < keys.length; i++) {
+	    		data[keys[i]+""] = groupData(group[keys[i]], groups, groupI);
+	    	}
+	    	return data;
+	    } else return group;
+    }
+ 	
+ 	/**
+ 	 *  Get all the key values for each item in groups
+ 	 *  Format returned: {	"year":["2003","2004"...],
+ 	 *						"month":["1","2",...,"12"],
+ 	 *						"carrier":["AA", "AQ", "AS", ...n],
+ 	 *						"airport":["JFK", "ABQ", "ANC", ...],
+ 	 *                      "performance":["ontime","delayed","cancelled"]
+ 	 *					}
+ 	 **/
+ 	function allKeys(bigdata, groups) {
+ 		var groupKeys = {}
+ 		groups.forEach(function(g) {
+			groupKeys[g] = _.keys(_.groupBy(bigdata, function(d) {
+			    	return d[g];
+			    })); 
+			groupKeys[g].sort(function(a,b){ return ( a<b? -1 : a>b ? 1 : 0);});
+ 		});
+		return groupKeys; 		
+ 	}
+	
+ 	function draw(data) {
+ 		/** Set up data grouping **/
+ 		var keysPerGroup = allKeys(data, groupColumns.concat(keyColumns));
+		keysPerGroup["performance"] = performanceColumns;
+
+		/** Set up constant variables **/		
+		bP.id1=id1;
+		bP.id1_key1="performance";
+		bP.id1_key2=keyColumns[0];
+		bP.id1_header=["Delay Reasons", "Airline", "Airline Flight Performance ", "% of Total Flights"];
+		bP.id2=id2;
+		bP.id2_key1="performance";
+		bP.id2_key2=keyColumns[1];
+		bP.id2_header=["Delay Reasons", "State", "State Flight Performance ", "% of Total Flights"];
+		bP.total_flights_key="arr_flights";
+
+		var width = 1200, height = 1010, margin ={b:0, t:40, l:220, r:50};
+		
+		/**  Get and display data for first year  **/
+ 		var groupedByMonth = groupData(data, ["month"]);
+		var mm_idx = 0;
+ 		//var groupedData = groupData(data, groupColumns);
+		var month = 	keysPerGroup["month"][mm_idx];
+		var dataByDate = groupedByMonth[month];
+		var data = [ bP.partDataForID1(dataByDate, keysPerGroup), 
+					 bP.partDataForID2(dataByDate, keysPerGroup)];
+					 
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "Septmber",
+			"October", "November", "December"];
+					
+		/** Update main header **/					 
+		d3.select(".mainheader").text("Flight Performance for " + months[mm_idx]) + " 2015"
+		debugger;
+		/** Update month slider  **/
+		var minMonth = mm_idx;
+		var maxMonth = keysPerGroup["month"].length -1;
+		d3.select("#min-time").text(months[minMonth]);
+		d3.select("#max-time").text(months[maxMonth]);
+		d3.select("#slider-month").attr("max", maxMonth)
+
+
+		/** Draw SVG **/				
+		var svg = d3.select("body")
+			.append("svg").attr('width',width).attr('height',(height+margin.b+margin.t))
+			.append("g").attr("transform","translate("+ margin.l+","+margin.t+")");
+		
+		bP.draw(data, svg, dataByDate, keysPerGroup);
+
+		
+		/** Aninmation by Month  **/
+		var updateMonth = function (mm_idx) {
+			d3.select("#slider-month").property("value", mm_idx);
+			month = keysPerGroup["month"][mm_idx];
+			dataByDate = groupedByMonth[month];
+			d3.select(".mainheader").text("Flight Performance " + months[mm_idx] + " 2015" 	);
+			bP.updateData(data, dataByDate, keysPerGroup);
+		};
+		
+		var month_interval = setInterval(function() {
+			updateMonth(mm_idx);
+			mm_idx++;
+			if (mm_idx >= keysPerGroup["month"].length) {
+				clearInterval(month_interval);			
+			}
+
+		}, 1000); 
+		
+		d3.select("#slider-month")
+      		.on("mousemove", function() { 
+        	updateMonth(parseInt(this.value));
+      	});
+
+
+ 	};
+ 	
+ 	
+
+</script>
+
+<title>Flight Performance</title>
+</head>
+
+<body>
+<table>
+<tr><td align="left" class="mainheader" colspan="3">Flight Performance</td>
+<td align="right" class="monthslider" valign="top">
+	<span id="min-time">2003</span> 
+	<input type="range" min="0" max="12" step="1" value="0" id="slider-month" style="width:300px">
+	<span id="max-time">2015</span>
+</td>
+</tr>
+<tr>
+<td class="subheader" colspan=5>
+	A flight's on-time performance can be affected by delays, fight cancellations and diversions.  Delays
+	can be categorized into: Air Carrier, Extreme Weather, National Aviation System (NAS),
+	Late-arriving aircraft, Security.  See <a href='http://www.rita.dot.gov/bts/help/aviation/html/understanding.html'>
+	RITA -Understanding flight delays and cancellations.</a>  Flight data is from January 2015 to August 2015 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	The chart below compares flight performance between Airline Carrier and State and how the volume of flights
+	and airport location can affect flight performance. <I>Count is in thousands unit.</I>
+</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+
+
+  d3.csv("data/2015_airline_delay_causes.csv", function(d) {
+        d['aircraft'] = +d['carrier_ct'];
+        d['weather'] = +d[' weather_ct'];
+        d['nas'] = +d['nas_ct'];
+        d['security'] = +d['security_ct'];
+        d['late'] = +d['late_aircraft_ct'];
+        d['cancelled'] = +d['arr_cancelled'];
+        d['diverted'] = +d['arr_diverted'];
+        d['arr_flights'] = +d['arr_flights'];
+        d['month'] = d[' month']; 
+        d['state'] = d['airport_name'].substring(
+        		d['airport_name'].indexOf(',')+1, 
+        		d['airport_name'].indexOf(':')).trim();
+
+        d['total_delay'] = d['aircraft'] + d['weather'] +
+        	d['nas'] + d['security'] + d['late aircraft'];
+        d['total_not_on_time'] = d['cancelled'] + d['diverted'] + d['total_delay'];
+		d['on-time'] = d['arr_flights'] - d['total_not_on_time'];
+		
+        return d;
+    }, draw);
+
+
+
+</script>
+
+</body>
+</html>

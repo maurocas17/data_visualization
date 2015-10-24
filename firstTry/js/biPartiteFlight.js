@@ -97,8 +97,10 @@
 	
 	
 
-	function visualize(data, totalflights){
+	function visualize(data, totalflights, selectedIndex){
 		var vis ={};
+    	selectedIndex = typeof selectedIndex !== 'undefined' ? selectedIndex:0;
+		
 		function calculatePosition(a, s, e, b, m, t){
 			
 			var total=d3.sum(a);
@@ -137,7 +139,7 @@
 			calculatePosition( 	data.data[0].map(function(d){  return d3.sum(d);}), 0, height, buffMargin, minHeight, 
 								totalflights[0].map(function(d) { return d3.sum(d); }) ),
 			calculatePosition( 	data.data[1].map(function(d){ return d3.sum(d);}), 0, height, buffMargin, minHeight, 
-								totalflights[1].map(function(d) { return d[0]; }) )
+								totalflights[1].map(function(d) { return d[selectedIndex]; }) )
 		];
 		
 		vis.subBars = [[],[]];
@@ -382,6 +384,7 @@
 	}
 	
 	bP.selectSegment = function(data, dataByDate, keysPerGroup, id, m, s) {
+		
 		data.forEach(function(k){
 			var newdata =  {keys:[], data:[]};	
 				
@@ -408,7 +411,7 @@
 				.map( function(v){ return v.map(function(d, i){ return (s==i ? d : 0);}); });
 			}			
 			
-			transition(visualize(newdata, totalflights), k.id);
+			transition(visualize(newdata, totalflights, s), k.id);
 				
 			var selectedBar = d3.select("#"+k.id).select(".part"+m).select(".mainbars")
 				.selectAll(".mainbar").filter(function(d,i){ return (i==s);});

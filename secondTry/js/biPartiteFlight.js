@@ -450,9 +450,7 @@
 				debugger;
 				var tiptext = bP.getTooltipText(d[0], m, k.id);
 
-				bP.tip.transition()        
-                .duration(200)      
-                .style("opacity", .9);      
+				bP.tip.transition().style("opacity", .9);      
 	            bP.tip.html(tiptext)  
 	                .style("left", (d3.event.pageX) + "px")     
 	                .style("top", (d3.event.pageY - 70) + "px");
@@ -470,7 +468,7 @@
 				.selectAll(".mainbar").filter(function(d,i){ return (i==s);});
 			
 			selectedBar.select(".mainrect").style("stroke-opacity",0);
-			if (p > 0) selectedBar.select(".barlabel").style('font-weight','normal');
+			if (m > 0) selectedBar.select(".barlabel").style('font-weight','normal');
 			selectedBar.select(".barvalue").style('font-weight','normal');
 			selectedBar.select(".barpercent").style('font-weight','normal');
 			selectedBar.select(".bartotalflights").style('font-weight','normal');

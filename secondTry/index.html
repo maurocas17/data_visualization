@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+ 	<script src="http://underscorejs.org/underscore.js" type="text/javascript"></script>
+	<script src="js/biPartiteFlight.js"></script>
+ 	
+	<style>
+		body{
+			width:1200px;
+		}
+		svg text{
+			font-size:12px;
+		}
+		rect{
+			shape-rendering:crispEdges;
+		}
+		table {
+			padding: 5px; 
+		}
+		.mainheader{
+			font-size: 30px;
+			font-weight: bold;
+		}
+		
+		.subheader{
+			font-size: 13px;
+			color: grey;
+		}
+		
+		.monthslider{
+		    font-size: 15px;
+			font-weight: bold;
+		}
+
+		div.tooltip {   
+		  position: absolute;           
+		  text-align: center;           
+		  width: auto;                  
+		  height: auto;                
+		  padding: 2px;             
+		  font: 12px sans-serif;        
+		  background: lightsteelblue;   
+		  border: 0px;      
+		  border-radius: 8px;           
+		  pointer-events: none;         
+		}
+</style>
+<script type="text/javascript">
+	var groupColumns = ["year", "month"];   //defines how the data is grouped
+	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
+		"October", "November", "December"];
+					
+	var performanceColumns = ["aircraft", "nas", "weather", "security", "late", "cancelled", "diverted"];
+	var performanceLongNames = ["Air Carrier", "National Aviation System", "Extreme Weather",  "Security", "Late Arriving Aircraft", "Cancelled Flight", "Diverted Flight"];
+	var keyColumns = ["carrier", "airport"];
+	var keyColumnsLongNames = ["carrier_name", "airport_name"];
+	var id2 = "AirportPerformance";
+	var id1 = "AirlinePerformance";
+
+	/** 
+	 **  	Group data according to groups array for easy retrieval
+	 **     i.e.  {"2003":{"1":{"AA":
+	 **/
+    function groupData(bigdata, groups, groupI) {
+    	groupI = typeof groupI !== 'undefined' ? groupI:0;
+    	var group = _.groupBy(bigdata, function(d) {
+    		return d[groups[groupI]];
+    		});
+    	
+    	groupI++;
+    	if (groupI < groups.length) {
+	    	var data = {};
+	    	var keys = _.keys(group);
+	    	for (var i=0; i < keys.length; i++) {
+	    		data[keys[i]+""] = groupData(group[keys[i]], groups, groupI);
+	    	}
+	    	return data;
+	    } else return group;
+    }
+ 	
+ 	/**
+ 	 *  Get all the key values for each item in groups
+ 	 *  Format returned: {	"year":["2003","2004"...],
+ 	 *						"month":["1","2",...,"12"],
+ 	 *						"carrier":["AA", "AQ", "AS", ...n],
+ 	 *						"airport":["JFK", "ABQ", "ANC", ...],
+ 	 *                      "performance":["ontime","delayed","cancelled"]
+ 	 *					}
+ 	 **/
+ 	function allKeys(bigdata, groups) {
+ 		var groupKeys = {}
+ 		groups.forEach(function(g) {
+			groupKeys[g] = _.keys(_.groupBy(bigdata, function(d) {
+		    	return d[g];
+		    }));
+			groupKeys[g].sort(function(a,b){ 
+				if (!isNaN(a) && !isNaN(b)) {
+					a = parseInt(a);
+					b = parseInt(b);				
+				}
+				return ( a<b? -1 : a>b ? 1 : 0);
+			});
+ 		});
+		return groupKeys; 		
+ 	}
+	
+ 	function draw(bigdata) {
+		/** Set up biPartite variables **/		
+		bP.id1=id1;
+		bP.id1_key1="performance";
+		bP.id1_key2=keyColumns[0];
+		bP.id1_header=["Delay Reasons", "Airline", "Airline Flight Performance ", "% of Total Flights"];
+		bP.id2=id2;
+		bP.id2_key1="performance";
+		bP.id2_key2=keyColumns[1];
+		bP.id2_header=["Delay Reasons", "Airport", "Airport Flight Performance ", "% of Total Flights"];
+		bP.total_flights_key="arr_flights";
+		bP.key1_long_names = performanceLongNames;
+		bP.key2_long_names = keyColumnsLongNames;
+		
+		/**  set up tooltip  */
+    	bP.tip = d3.select("body").append("div")   
+	    .attr("class", "tooltip")               
+	    .style("opacity", 0);
+	    
+    	bP.getTooltipText = function (d, m, id) {
+			var tiptext = "";
+			if (m == 1 && id == id2) {
+				var long_name = (d.long_name).split(":");
+				tiptext += "<strong>";
+				tiptext += long_name[1];
+				tiptext += "</strong>";
+				tiptext += "<br>";
+				tiptext += "<strong>";
+				tiptext += long_name[0];
+				tiptext += "</strong>";
+			} else {
+				tiptext += "<strong>";
+				tiptext += d.long_name;
+				tiptext += "</strong>";
+			}
+			tiptext += "<br>";
+			tiptext += "<b>Total Flights:</b><span>";
+			tiptext += d.tf;
+			tiptext += "</span>";
+			return tiptext;
+    	};
+    
+    
+
+ 		/** Set up data grouping **/
+		debugger;
+ 		var keysPerGroup = allKeys(bigdata, groupColumns.concat(keyColumns));
+		keysPerGroup["performance"] = performanceColumns;
+ 		var groupedData = groupData(bigdata, groupColumns);
+
+		/**  Get and display data for first year  first month **/
+		var yr = keysPerGroup["year"][0];
+ 		var groupedByMonth = groupedData[yr];
+
+		var month = 	keysPerGroup["month"][0];
+		var dataByDate = groupedByMonth[month];
+		var data = [ bP.partDataForID1(dataByDate, keysPerGroup), 
+					 bP.partDataForID2(dataByDate, keysPerGroup)];
+
+
+ 		
+		/**  Set-up time slider  **/
+		var mm_ctr = 0;
+ 		var time_array = [];
+ 		
+ 		keysPerGroup["year"].forEach(function(year, y) {
+ 			groupedByMonth = groupedData[year];
+ 			_.keys(groupedByMonth).forEach(function (d, i) {
+ 				time_array[mm_ctr] = [y, i];
+ 				mm_ctr++;
+ 			});
+ 		});
+ 		
+		/** Update main header **/					 
+		d3.select(".mainheader").text("Flight Performance for " + months[0] + " " + yr);
+
+		/** Update time slider  **/
+		var minMonth = 0;
+		var maxMonth = time_array.length-1;
+		d3.select("#min-time").text(months[time_array[minMonth][1]] + " " + keysPerGroup["year"][time_array[minMonth][0]]);
+		d3.select("#max-time").text(months[time_array[maxMonth][1]] + " " + keysPerGroup["year"][time_array[maxMonth][0]]);
+		d3.select("#slider-month").attr("max", maxMonth)
+
+
+					 
+		/** Draw SVG **/				
+		var width = 1200, height = 610, margin ={b:0, t:40, l:220, r:50};
+		
+		
+		var svg = d3.select("body")
+			.append("svg").attr('width',width).attr('height',(height+margin.b+margin.t))
+			.append("g").attr("transform","translate("+ margin.l+","+margin.t+")");
+
+		bP.draw(data, svg, dataByDate, keysPerGroup);
+		
+
+		/** Animation by Month Intervals **/
+		
+		mm_ctr = 0;
+		groupedByMonth = groupedData[yr]
+		
+		var updateMonth = function (mm_ctr) {
+			d3.select("#slider-month").property("value", mm_ctr);
+			yr = keysPerGroup["year"][time_array[mm_ctr][0]];
+			groupedByMonth = groupedData[yr];
+			var month = keysPerGroup["month"][time_array[mm_ctr][1]];
+			dataByDate = groupedByMonth[month];
+			d3.select(".mainheader").text("Flight Performance " + months[month-1] + " " + yr	);
+			bP.updateData(data, dataByDate, keysPerGroup);
+		};
+		
+		var month_interval = setInterval(function() {
+			updateMonth(mm_ctr);
+			mm_ctr++;
+			if (mm_ctr >= time_array.length) {
+				clearInterval(month_interval);			
+			}
+
+		}, 1000); 
+		
+		d3.select("#slider-month")
+      		.on("mousemove", function() { 
+        	updateMonth(parseInt(this.value));
+      	});
+
+
+ 	};
+ 	
+ 	
+
+</script>
+
+<title>Flight Performance</title>
+</head>
+
+<body>
+<table>
+<tr><td align="left" class="mainheader" colspan="3">Flight Performance</td>
+<td align="right" class="monthslider" valign="top">
+	<span id="min-time"></span> 
+	<input type="range" min="0" max="19" step="1" value="0" id="slider-month" style="width:300px">
+	<span id="max-time"></span>
+</td>
+</tr>
+<tr>
+<td class="subheader" colspan=5>
+	A flight's on-time performance can be affected by delays, fight cancellations and diversions.  Delays
+	can be categorized into:&nbsp;&nbsp;<b>Air Carrier.</b> The cause was within the airline's control 
+	(e.g. maintenance or crew problems, aircraft cleaning, baggage loading, fueling, etc.).&nbsp;&nbsp;
+	 <b>Extreme Weather</b> such as tornado, blizzard or hurricane. &nbsp;&nbsp;
+	<b>National Aviation System (NAS)</b>  which refers to a broad set of conditions, such as non-extreme 
+	weather conditions, airport operations, heavy traffic volume, and air traffic control.&nbsp;&nbsp;
+	 <b>Late-arriving aircraft</b> where a previous flight with same aircraft arrived late, causing the present 
+	 flight to depart late.&nbsp;&nbsp; <b>Security</b> caused by evacuation 
+	 of a terminal or concourse, re-boarding of aircraft because of security breach, inoperative screening equipment 
+	 and/or long lines in excess of 29 minutes at screening areas.  For more details, see 
+	 <a href='http://www.rita.dot.gov/bts/help/aviation/html/understanding.html'>RITA -Understanding flight delays 
+	 and cancellations.</a>  The chart below compares flight performance among Airline Carriers and Airports; as well 
+	 as flight performance between Airline Carriers and Airport.   <p>
+	
+	<i>Flight data includes the <a href="https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America">top 4 Largest US Airlines</a>: 
+	American Airlines (AA), Delta Air Lines (DL), Southwest Airlines (WN), and United Airlines (UA);
+	and the <a href="https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_the_United_States">
+	top 12 busiest Airports in the United States</a> from January 2014 to August 2015.
+	Count is in thousands unit.  % of Total Flights is the percentage of that delay against the overall 
+	total of delays, cancellations, diversions and on-time flights.
+	</i>
+</td>
+</tr>
+</table>
+
+<script type="text/javascript">
+
+
+  d3.csv("data/2015-2014_airline_delay_causes.csv", function(d) {
+        d['aircraft'] = +d['carrier_ct'];
+        d['weather'] = +d[' weather_ct'];
+        d['nas'] = +d['nas_ct'];
+        d['security'] = +d['security_ct'];
+        d['late'] = +d['late_aircraft_ct'];
+        d['cancelled'] = +d['arr_cancelled'];
+        d['diverted'] = +d['arr_diverted'];
+        d['arr_flights'] = +d['arr_flights'];
+        d['month'] = d[' month']; 
+        d['state'] = d['airport_name'].substring(
+        		d['airport_name'].indexOf(',')+1, 
+        		d['airport_name'].indexOf(':')).trim();
+
+        d['total_delay'] = d['aircraft'] + d['weather'] +
+        	d['nas'] + d['security'] + d['late'];
+        d['total_not_on_time'] = d['cancelled'] + d['diverted'] + d['total_delay'];
+		d['on-time'] = d['arr_flights'] - d['total_not_on_time'];
+		
+        return d;
+    }, draw);
+
+
+
+</script>
+
+</body>
+</html>

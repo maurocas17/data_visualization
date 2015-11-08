@@ -58,6 +58,12 @@
 	var keyColumnsLongNames = ["carrier_name", "airport_name"];
 	var id2 = "AirportPerformance";
 	var id1 = "AirlinePerformance";
+	
+	//ordering according to https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America
+	var keyColumn_carrier = ["AA", "DL", "WN", "UA"];
+	var keyColumn_airport = ["ATL","LAX", "ORD", "DFW", "JFK", "DEN", "SFO", "CLT", "LAS", "PHX", "IAH", "MIA"];
+	
+	
 
 	/** 
 	 **  	Group data according to groups array for easy retrieval
@@ -155,6 +161,9 @@
 		debugger;
  		var keysPerGroup = allKeys(bigdata, groupColumns.concat(keyColumns));
 		keysPerGroup["performance"] = performanceColumns;
+		keysPerGroup["carrier"] = keyColumn_carrier;	//sort according to wikipedia
+		keysPerGroup["airport"] = keyColumn_airport;	//sort according to wikipedia
+		
  		var groupedData = groupData(bigdata, groupColumns);
 
 		/**  Get and display data for first year  first month **/

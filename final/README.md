@@ -1,18 +1,19 @@
-<h1>Summary</h1>
+<h2>Summary</h2>
 This data visualization shows the factors the affect Flight Performance for the top 4 US Airline and the top
 12 busiest airport in the United States.   These factors include delays, which are further categorized into
 five (Late-Arriving Aircraft, National Aviation System, Air Carrier, Extreme Weather
 and Security), cancellations and diversions.   The percentage count for each factor shows that Late-Arriving
 Aircraft is the major cause of delay.  The percentage of the total performance against the Total Flights 
-for each Airline and Airport measures the overall flight performance for that Airline and Airport. 
+for each Airline and Airport measures the overall flight performance, thus, show the Airline and Airport with the
+lowest performance. 
 
-<h1>Design</h1>
+<h2>Design</h2>
 The design of the visualization is based on bipartite graph, which models the relationship of two different
 classes of objects.  There are two bipartite graphs included in the visualization: One is a relationship between
 Flight Performance and Airlines and the other is Flight Performance and Airports.  When I was looking
 for a design, I kept coming back to the bipartite visualization sample from <a href="http://bl.ocks.org/NPashaP/9796212">
-NPashaP</a> and I thought this is great for showing relationship at the same time conveying the 
-proportion of that relationship with the use of color scheme and the count value.   So, in choosing bipartite, 
+NPashaP</a> and I thought that this is great in showing relationship at the same time conveying the 
+proportion of the relationship with the use of color scheme and count value.   So, in choosing bipartite, 
 I was able to show the proportion of each performance factor between Airlines and Airports at the same time
 show a comparison among the performance factors, among the Airlines and among the Airports.   I've also included
 the percentage of that performance against the Total Flights, which shows the overall performance of an Airline
@@ -46,13 +47,13 @@ message.   I showed my visualization to a friend and he gave me feedback on the 
 nice to see which one is the top Airline and which one is the busiest Airport.  This definitely make sense, so I
 changed the order from top to bottom; for Airlines, from largest to smallest and top Airport being the busiest.</p>
 
-I showed my <a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/thirdTry/index.html">thirdTry</a>
-to another friend.  He gave feedback about the paragraph and Delay Reasons.  He mentioned that the paragraph does not effectively
+I showed my <a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/thirdTry/index.html">thirdTry</a>
+to another friend.  He gave me feedback on the paragraph and Delay Reasons.  He mentioned that the paragraph does not effectively
 convey the lowest performance, specifically in the statement "Late-Arriving Aircraft is not the number one cause of delay for that Airline or Airport"
 is confusing as well as the "volume of on-time flights", which is not easily seen at all.   
 
 So, I changed the "Delay Reasons" to "Performance Factors" and updated the message to emphasize lowest
-performance.  The final changes are incorporated in my <a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final graph.</a>
+performance.  The final changes are incorporated in my <a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final graph.</a>
 
 
 <h1>Feedback</h1>

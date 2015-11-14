@@ -56,7 +56,7 @@ So, I changed the "Delay Reasons" to "Performance Factors" and updated the messa
 performance.  The final changes are incorporated in my <a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final graph.</a>
 
 
-<h1>Feedback</h1>
+<h2>Feedback</h2>
 <table width="100%">
 	<tr><td><b>Version</b></td><td><b> Reviewer</b></td><td><b>Feedback</b></td></tr>
 	<tr><td valign="top">
@@ -132,7 +132,7 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 </table>
 
 
-<h1>Resources</h1>
+<h2>Resources</h2>
 <ul><li>SVG: <a href="http://tutorials.jenkov.com/svg/g-element.html">http://tutorials.jenkov.com/svg/g-element.html</a></li>
 	<li>SVG: <a href="http://www.w3schools.com/svg/">http://www.w3schools.com/svg/</a></li>
 	<li>SVG:  <a href="https://www.dashingd3js.com/svg-group-element-and-d3js">https://www.dashingd3js.com/svg-group-element-and-d3js</a></li>
@@ -144,5 +144,9 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 	<li>word wrap: <a href="http://bl.ocks.org/mbostock/7555321">http://bl.ocks.org/mbostock/7555321</a></li>
 	<li>range transition: <a href="http://romsson.github.io/dragit/example/nations.html">http://romsson.github.io/dragit/example/nations.html</a></li>
 	<li>data: <a href="http://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp">http://www.transtats.bts.gov/OT_Delay/OT_DelayCause1.asp</a></li>
-	
+	<li>Understanding Flight Performance:<a href="http://www.rita.dot.gov/bts/help/aviation/html/understanding.html">http://www.rita.dot.gov/bts/help/aviation/html/understanding.html</a></li>
+	<li>Top Airlines:<a href="https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America">https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America</a></li>
+	<li>Busiest Airports:<a href="https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_the_United_States">https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_the_United_States</a></li>
+	<li>Transportation in the US: <a href="https://en.wikipedia.org/wiki/Transportation_in_the_United_States#Passenger">https://en.wikipedia.org/wiki/Transportation_in_the_United_States#Passenger</a></li>
+</ul>	
 	

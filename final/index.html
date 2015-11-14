@@ -118,11 +118,11 @@
 		bP.id1=id1;
 		bP.id1_key1="performance";
 		bP.id1_key2=keyColumns[0];
-		bP.id1_header=["Delay Reasons", "Airline", "Airline Flight Performance ", "% of Total Flights"];
+		bP.id1_header=["Performance Factor", "Airline", "Airline Flight Performance ", "% of Total Flights"];
 		bP.id2=id2;
 		bP.id2_key1="performance";
 		bP.id2_key2=keyColumns[1];
-		bP.id2_header=["Delay Reasons", "Airport", "Airport Flight Performance ", "% of Total Flights"];
+		bP.id2_header=["Performance Factor", "Airport", "Airport Flight Performance ", "% of Total Flights"];
 		bP.total_flights_key="arr_flights";
 		bP.key1_long_names = performanceLongNames;
 		bP.key2_long_names = keyColumnsLongNames;
@@ -278,8 +278,12 @@
 	 and cancellations.</a> <p/>
 
 	From January 2014 to August 2015, majority of delays is caused by Late-Arriving Aircraft, followed by NAS and Air Carrier.
-	Weather cause delay, which is widely broadcasted, is one of the lowest cause of delay.  Among the <a href="https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America">
-	4 major airlines in the U.S.</a>, Southwest Airlines got the lowest performance for 10 months, followed by United Airlines
+	Extreme weather, which is widely broadcasted, is one of the lowest cause of delay.   Note that there is another category of
+	weather within NAS that could have been prevented with proper management.  So, it is surprising that 
+	<a href="http://www.rita.dot.gov/bts/help/aviation/html/understanding.html#q8">NAS</a> consistently
+	contribute to a high percentage of delay when these delays can be corrected by the airports and the Federal 
+	Aviation Administration.  In another note, among the <a href="https://en.wikipedia.org/wiki/List_of_largest_airlines_in_North_America">
+	4 major airlines in the U.S.</a>, Southwest Airlines (WN) got the lowest performance for 10 months, followed by United Airlines (UA)
 	for 6 months.  On the airport side, inspite of being the <a href="https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_the_United_States">busiest 
 	airport</a>, Atlanta Airport did not get the lowest performance at all. <p/>
 	

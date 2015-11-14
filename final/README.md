@@ -60,11 +60,10 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 <table width="100%">
 	<tr><td><b>Version</b></td><td><b> Reviewer</b></td><td><b>Feedback</b></td></tr>
 	<tr><td>
-		<a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/firstTry/index.html">FirstTry</a>
+		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/firstTry/index.html">FirstTry</a>
 	</td><td>
 		Stephen1
 	</td><td>
-		<i>
 		Thanks for posting! It looks like you put a lot of work into your visualization here. I am going to just post my immediate and unorganized thoughts about the visualization - hopefully there will be something useful.
 		<br>
 		What do you notice in the visualization?
@@ -101,7 +100,7 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 		</li>
 	</td></tr>
 	<tr><td>
-		<a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/secondTry/index.html">SecondTry</a>
+		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/secondTry/index.html">SecondTry</a>
 	</td><td>
 		Stephen1
 	</td><td>
@@ -117,7 +116,7 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 		Why don't you change the order?  To better represent the top 4 Airlines and top 12 busiest Airport?
 	<td></tr>
 	<tr><td>
-		<a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/thirdTry/index.html">ThirdTry</a>
+		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/thirdTry/index.html">ThirdTry</a>
 	</td><td>
 		friend 2
 	</td><td>
@@ -126,7 +125,7 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 	    Not sure if Delay Reasons is correct, though... 
 	<td></tr>
 	<tr><td>
-		<a href='http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final</a>
+		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final</a>
 	</td><td>
 	</td><td>
 	<td></tr>

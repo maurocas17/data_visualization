@@ -59,9 +59,9 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 <h1>Feedback</h1>
 <table width="100%">
 	<tr><td><b>Version</b></td><td><b> Reviewer</b></td><td><b>Feedback</b></td></tr>
-	<tr><td align="top">
+	<tr><td valign="top">
 		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/firstTry/index.html">FirstTry</a>
-	</td><td align="top">
+	</td><td valign="top">
 		Stephen1
 	</td><td>
 		Thanks for posting! It looks like you put a lot of work into your visualization here. I am going to just post my immediate and unorganized thoughts about the visualization - hopefully there will be something useful.
@@ -99,9 +99,9 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 		Overall, a very interesting visualization. Nice work!
 		</li>
 	</td></tr>
-	<tr><td align="top">
+	<tr><td valign="top">
 		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/secondTry/index.html">SecondTry</a>
-	</td><td align="top">
+	</td><td valign="top">
 		Stephen1
 	</td><td>
 		The improvements look great! I like how I can hover over the airline letters now and get more information about which airline I'm looking at. I also think the bold, capitalized text for the delay reasons helps the different categories "pop" in the visualization, and the descriptions at the top help as well.
@@ -110,21 +110,21 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 	<td></tr>
 	<tr><td>
 		&nbsp;
-	</td><td align="top">
+	</td><td valign="top">
 		friend 1
 	</td><td>
 		Why don't you change the order?  To better represent the top 4 Airlines and top 12 busiest Airport?
 	<td></tr>
-	<tr><td align="top">
+	<tr><td valign="top">
 		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/thirdTry/index.html">ThirdTry</a>
-	</td><td align="top">
+	</td><td valign="top">
 		friend 2
 	</td><td>
 	    It is still confusing...  I don't understand "We can see here that even-though Late-Arriving Aircraft is the number one cause of delay, it is not the number one cause of delay for that Airline or Airport.".  It is hard to see.
 	    Also, where is on-time flight data here?  <br>
 	    Not sure if Delay Reasons is correct, though... 
 	<td></tr>
-	<tr><td align="top">
+	<tr><td valign="top">
 		<a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/final/index.html">final</a>
 	</td><td>
 	</td><td>No feedback

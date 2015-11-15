@@ -37,7 +37,7 @@ credence to the % of Total Flight value.  <p/>
 All the feedback received in the <a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/firstTry/index.html">firstTry</a>
 have been incorporated to the my <a href="http://htmlpreview.github.io/?https://github.com/maurocas17/data_visualization/blob/master/secondTry/index.html">secondTry</a>.
 Here, the main feedback I got is that the explanation about the graph is more suited for an exploratory rather 
-than explanatory as required in the project rubic.  As a programmer, I can sometimes loose myself in the process of 
+than explanatory as required in the project rubic.  As a programmer, I can sometimes lost myself in the process of 
 building something useful, something that you can get a lot of information out of.   So, this feedback made
 me think on what I really want to convey.  So, I thought of changing the color scheme to just using one tone (blue)
 and adding red text to what relationship I want to emphasize.  So, I easily thought of the performance factor.  I
@@ -90,7 +90,7 @@ performance.  The final changes are incorporated in my <a href="http://htmlprevi
 		Late arriving aircraft cause most of the late departures, followed by
 		air carrier problems. NAS causes a nontrivial percentage of delays.
 		</li>
-		Is there something you don’t understand in the graphic?
+		Is there something you donâ€™t understand in the graphic?
 		<li>
 		If I hover over 'aircraft', I see 'count' is 15.0 ( 30%) and aircraft
 		is 6% of total flights. However, at the same time, AK has a count of 0.0 and 17% of
